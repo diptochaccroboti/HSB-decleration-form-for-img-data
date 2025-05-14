@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Joint Bleeding Detection Declaration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-xl p-8">
+    <div class="flex justify-center mb-4">
+      <img src="OIP (1).jfif" alt="Hemophilia Society Logo" class="w-24 h-24" />
+    </div>
+
+    <h1 class="text-2xl font-bold text-center mb-6 text-red-700">
+      Real-Time Joint Bleeding Detection of Hemophilia  <br>
+    </h1>
+    <p class="text-2xl font-bold text-center mb-6 text-black-700">(Image Data Collection Activities)</p>
+    <form id="bleedingForm" class="space-y-4">
+      <div>
+        <label class="block font-medium">Region</label>
+        <select id="region" class="w-full mt-1 p-2 border rounded">
+          <option value="">Select Region</option>
+          <option>Barisal (RYC)</option>
+          <option>Khulna (RYC)</option>
+          <option>Sylhet (RYC)</option>
+          <option>CTG (RYC)</option>
+          <option>Rajshahi (RYC)</option>
+          <option>Rangpur (RYC)</option>
+          <option>Mymensingh (RYC)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-medium">President Name</label>
+        <input type="text" id="president" class="w-full mt-1 p-2 border rounded" />
+      </div>
+      <div>
+        <label class="block font-medium">Member Names (comma-separated)</label>
+        <input type="text" id="members" class="w-full mt-1 p-2 border rounded" />
+      </div>
+      <div>
+        <label class="block font-medium">Approx. Number of Pictures Collected</label>
+        <input type="number" id="pictureCount" class="w-full mt-1 p-2 border rounded" />
+      </div>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Preview Declaration
+      </button>
+    </form>
+    
+  </div>
+  <footer class="mt-12 text-center text-sm text-gray-600 border-t pt-4">
+    © All rights reserved — Hemophilia Society of Bangladesh<br>
+    Developed by <span class="font-semibold text-gray-800">Dipto</span>
+  </footer>
+  
+  <script>
+    document.getElementById('bleedingForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const region = document.getElementById('region').value;
+      const president = document.getElementById('president').value;
+      const members = document.getElementById('members').value;
+      const pictureCount = document.getElementById('pictureCount').value;
+
+      if (!region || !president || !members || !pictureCount) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      // Save to localStorage
+      localStorage.setItem("formData", JSON.stringify({
+        region, president, members, pictureCount
+      }));
+
+      // Redirect to preview page
+      window.location.href = "preview.html";
+    });
+  </script>
+</body>
+</html>

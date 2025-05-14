@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Declaration Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-xl p-8">
+    
+    <!-- PDF content -->
+    <div id="declarationContent" class="bg-white p-8 rounded-xl shadow border text-gray-800 text-base leading-relaxed space-y-4 font-sans" style="page-break-inside: avoid;">
+      
+      <!-- Logo -->
+      <div class="flex justify-center mb-4">
+        <img src="OIP (1).jfif" alt="Hemophilia Society Logo" class="w-24 h-24" />
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-center text-xl font-bold text-red-700 underline mb-4">
+        Declaration
+      </h2>
+
+      <!-- Body -->
+      <div id="declarationText" class="text-justify space-y-4"></div>
+
+      <!-- Footer -->
+      <div class="text-sm mt-6">
+        <p>Date: <span id="currentDate"></span></p>
+        <p>Signature: ______________________</p>
+      </div>
+    </div>
+
+    <!-- Download Button (excluded from PDF) -->
+    <div class="mt-6 text-center">
+      <button onclick="downloadPDF()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+        Download as PDF
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem("formData"));
+    if (!data) {
+      alert("No form data found. Please submit the form first.");
+      window.location.href = "index.html";
+    }
+
+    const today = new Date().toLocaleDateString();
+    document.getElementById("currentDate").textContent = today;
+
+    // Set the declaration content with semantic HTML
+    const declarationHTML = `
+      <p>
+        This is to declare that the following individuals from the 
+        <span class="font-bold text-blue-600">${data.region}</span> region, under the leadership of 
+        President <span class="font-bold text-blue-600">${data.president}</span>, have collected approximately 
+        ${data.pictureCount} joint bleeding pictures of knee, elbow, and ankle.
+      </p>
+      <p>
+        Members involved: <span class="font-bold text-black">${data.members}</span>
+      </p>
+      <p>
+        All pictures were collected with full consent of the patients involved. These patients are also registered 
+        members of the Hemophilia Society of Bangladesh.
+      </p>
+    `;
+
+    document.getElementById("declarationText").innerHTML = declarationHTML;
+
+    function downloadPDF() {
+      const element = document.getElementById("declarationContent");
+
+      html2pdf()
+        .set({
+          margin: 0.75,
+          filename: 'declaration.pdf',
+          image: { type: 'jpeg', quality: 1 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        })
+        .from(element)
+        .save();
+    }
+  </script>
+</body>
+</html>
